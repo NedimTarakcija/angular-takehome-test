@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { SharedService } from './app-data/shared-service';
 
 @Component({
   selector: 'app-root',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav>
       <a routerLink="orders">Orders</a> |
@@ -11,4 +13,8 @@ import { Component } from '@angular/core';
     <router-outlet></router-outlet>
   `,
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private readonly sharedService: SharedService) {
+    this.sharedService.loadData();
+  }
+}

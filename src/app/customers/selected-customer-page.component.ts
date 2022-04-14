@@ -1,15 +1,22 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { CustomersService } from '../app-data/customers-service';
+import { Customer } from '../models/customer.interface';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- 3. TODO Display the properties of the selected customer -->
-    <ul>
-      <li>Customer Id:</li>
-      <li>Customer Name:</li>
-      <li>Customer Address:</li>
-      <li>Customer City:</li>
-      <li>Customer Country:</li>
+    <ul *ngIf="customer$ | async as customer">
+      <li>Customer Id: {{customer.id}}</li>
+      <li>Customer Name: {{customer.name}}</li>
+      <li>Customer Address: {{customer.address}}</li>
+      <li>Customer City: {{customer.city}}</li>
+      <li>Customer Country: {{customer.country}}</li>
     </ul>
   `,
 })
-export class SelectedCustomerPageComponent {}
+export class SelectedCustomerPageComponent {
+  customer$: Observable<Customer | undefined> = this.customersService.getSelectedCustomer();
+
+  constructor(private readonly customersService: CustomersService) { }
+}
